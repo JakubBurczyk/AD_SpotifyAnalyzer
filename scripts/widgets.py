@@ -1,6 +1,7 @@
 from __future__ import annotations
 import datetime
 from tkinter.messagebox import NO
+from grpc import Call
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
@@ -100,6 +101,18 @@ class Label(Widget):
     def setText(self, text:str):
         self._widget.setText(text)
 
+class LineEdit(Widget):
+    _widget: QLineEdit
+
+    def __init__(self, win: window.Window, name: str):
+        super().__init__(win, name)
+    
+    def setCallback(self, callback:Callable):
+        self._widget.textChanged.connect(callback)
+
+    def clear(self):
+        self._widget.clear()
+    
 class SpinBoxAbstract(Widget):
     def __init__(self, win:window.Window, name: str):
         super(SpinBoxAbstract, self).__init__(win, name)
@@ -282,7 +295,7 @@ class ListWidget(Widget):
         return self._widget.selectedItems()[0]
 
     def getSelectedText(self) -> str:
-        print(self.getSelected())
+        #print(self.getSelected())
         return self.getSelected().text()
 
 
@@ -298,6 +311,7 @@ class Tab(Widget):
 
     def addWidget(self, widget:Widget):
         self._widgets[widget.name] = widget
+        return widget
         pass
 
     def update(self):
@@ -316,7 +330,11 @@ class TabWidget(Widget):
         super().__init__(win, name)
         self.tabs: Dict[str, Tab] = {}
         self.updatable = False
+        
         pass
+
+    def connectChange(self, callback:Callable):
+        self._widget.currentChanged.connect(callback)
     
     def addTab(self,name: str, index: int) -> widgets.Tab:
         self.tabs[name] = Tab(self._window, name, index)
@@ -364,6 +382,7 @@ class TabWidget(Widget):
         tab: Tab
         for name, tab in self.tabs.items():
             if tab.updatable and tab.index == currentIndex:
+                #print(f"Current tab [{currentIndex}] Updtbl [{tab.updatable}] Tab idx [{tab.index}]")
                 tab.update()
             pass
         pass
