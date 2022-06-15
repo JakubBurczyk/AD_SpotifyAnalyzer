@@ -1,25 +1,34 @@
 from __future__ import annotations
 import datetime
+from tkinter.messagebox import NO
 
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+import widgets as widgets
+from matplotlib import pyplot as plt
 from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QListWidgetItem
 from PyQt5.QtGui import QPixmap
 from PyQt5 import *
 from PyQt5 import QtWidgets, uic, QtGui
 import sys
+import random
 from termcolor import colored
 import numpy as np
-from typing import Callable, List
+from typing import Callable, Iterable, List, Dict
 
 import os
 from abc import ABC
 import window as window
+
 
 class Widget(ABC):
 
     def __init__(self, win:window.Window, name: str):
         self._window = win
         self._name = name
-        self._widget = getattr(self._window, self._name)
+        self._widget = self.find(self._window, self._name)
+        self.updatable = False
         pass
 
     def disable(self) -> None:
@@ -43,6 +52,11 @@ class Widget(ABC):
         self.setEnabled(not state)
         return self.enabled
         pass
+    
+    @staticmethod
+    def find(win: window.Window, name:str):
+        return getattr(win, name)
+        pass
 
     def update(self):
         pass
@@ -65,11 +79,26 @@ class Widget(ABC):
 class Button(Widget):
     _widget: QPushButton
 
-    def __init__(self, win:window.Window, name: str, function: Callable):
+    def __init__(self, win:window.Window, name: str, function: Callable = None):
         super(Button, self).__init__(win, name)
-        self._widget.clicked.connect(function)
+        if function is not None:
+            self.setCallback(function)
         pass
 
+    def setCallback(self, callback:Callable):
+        self._widget.clicked.connect(callback)
+
+    def update(self):
+        print(f"Debug update [{self.name}]")
+
+class Label(Widget):
+    _widget: QLabel
+
+    def __init__(self, win: window.Window, name: str):
+        super().__init__(win, name)
+    
+    def setText(self, text:str):
+        self._widget.setText(text)
 
 class SpinBoxAbstract(Widget):
     def __init__(self, win:window.Window, name: str):
@@ -113,6 +142,7 @@ class Pixmap(Widget):
         self.frequency = 1  # Hz
         self.updateDt = 1 / self.frequency
         self.lastUpdate = datetime.datetime.now()
+        self.updatable = False
         pass
 
     def update(self):
@@ -137,7 +167,7 @@ class LCD(Widget):
         self.updateDt = 1/self.frequency
         self.lastUpdate = datetime.datetime.now()
         self.getValue = None
-        self.updateable = False
+        self.updatable = False
         pass
 
     def setCallback(self, function: Callable):
@@ -202,7 +232,7 @@ class TextBrowser(Widget):
             for l in line:
                 self._widget.append(l)
         try:
-            #self._widget.verticalScrollBar().setValue(self._widget.verticalScrollBar().maximum())
+            self._widget.verticalScrollBar().setValue(self._widget.verticalScrollBar().maximum())
             pass
         except:
             pass
@@ -213,4 +243,152 @@ class TextBrowser(Widget):
         pass
 
 
+class ListWidget(Widget):
+    _widget: QListWidget
 
+    def __init__(self, win: window.Window, name: str):
+        super().__init__(win, name)
+        self._widget.addItems([f"pos {v}" for v in range(20)])
+
+    def addItems(self, items:Iterable[str]):
+        if isinstance(items, Iterable[str]):
+            self._widget.addItems(items)
+        return self
+
+    def addItem(self, item:str):
+        if isinstance(item, str):
+            self._widget.addItem(item)
+        return self
+
+    def setCallbackClicked(self, callback:Callable):
+        self._widget.itemClicked.connect(callback)
+        return self
+
+    def setCallbackDoubleClicked(self, callback:Callable):
+        self._widget.itemDoubleClicked.connect(callback)
+        return self
+
+    def getItems(self) -> List[QListWidgetItem]:
+        return self._widget.items()
+
+    def getItemsText(self):
+        item: QListWidgetItem
+        itemsText = []
+        for item in self.getItems():
+            itemsText.append(item.text())
+        return itemsText
+    
+    def getSelected(self) -> QListWidgetItem:
+        return self._widget.selectedItems()[0]
+
+    def getSelectedText(self) -> str:
+        print(self.getSelected())
+        return self.getSelected().text()
+
+
+
+
+class Tab(Widget):
+    
+    def __init__(self, win: window.Window, name: str, index:int):
+        super().__init__(win, name)
+        self.index = index
+        self._widgets: Dict[str, Widget] = {}
+        pass
+
+    def addWidget(self, widget:Widget):
+        self._widgets[widget.name] = widget
+        pass
+
+    def update(self):
+        widget: Widget
+        for name, widget in self._widgets.items():
+            if widget.updatable:
+                widget.update()
+        pass
+
+
+class TabWidget(Widget):
+    _widget = QTabWidget
+    tabs = Dict[str, Tab]
+
+    def __init__(self, win: window.Window, name: str):
+        super().__init__(win, name)
+        self.tabs: Dict[str, Tab] = {}
+        self.updatable = False
+        pass
+    
+    def addTab(self,name: str, index: int) -> widgets.Tab:
+        self.tabs[name] = Tab(self._window, name, index)
+        return self.tabs[name]
+
+    def addToTab(self,tab, widget):
+        target_tab:Tab = None
+
+        if isinstance(tab,Tab):
+            target_tab = tab
+        elif isinstance(tab,str):
+            target_tab = self.tabs[tab]
+
+        if target_tab is None:
+            raise Exception("No target tab")
+        else:
+            target_widget:Widget = None
+
+            if isinstance(widget, Widget):
+                target_widget = widget
+            elif isinstance(widget, str):
+                target_widget = Widget.find(self._window, widget)
+
+            if target_widget is None:
+                raise Exception("No target widget to add to tab")
+            else:
+                target_tab.addWidget(target_widget)
+        
+        return target_widget
+
+    def currentIndex(self) -> int:
+        return self._widget.currentIndex()
+        pass
+
+    def indexOf(self,name:str):
+        idx = -1
+        if name in self.tabs:
+            tab:Tab = self.tabs[name]
+            idx = tab.index
+        return idx 
+        pass
+
+    def updateCurrentTab(self):
+        currentIndex = self.currentIndex()
+        tab: Tab
+        for name, tab in self.tabs.items():
+            if tab.updatable and tab.index == currentIndex:
+                tab.update()
+            pass
+        pass
+    
+    def update(self):
+        if self.updatable:
+            self.updateCurrentTab()
+    
+
+class MatplotlibFigure(Widget):
+    _widget:QVBoxLayout
+
+    def __init__(self, win: window.Window, name: str):
+        super().__init__(win, name)
+
+        self.figure = plt.figure()
+        self.canvas = FigureCanvas(self.figure)
+        self.toolbar = NavigationToolbar(self.canvas, win)
+        
+        self._widget.addWidget(self.canvas)
+        self._widget.addWidget(self.toolbar)
+
+    def plotRandom(self):
+        data = [random.random() for i in range(10)]
+        self.figure.clear()
+        ax = self.figure.add_subplot(1,1,1)
+        ax.plot(data, '*-')
+        self.canvas.draw()

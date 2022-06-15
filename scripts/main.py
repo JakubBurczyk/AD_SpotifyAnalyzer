@@ -1,3 +1,10 @@
-from gui import GUI
+from spotifyAnalyzer import SpotifyAnalyzer
 
-gui = GUI()
+def main():
+    app = SpotifyAnalyzer()
+    app.start()
+    pass
+
+if __name__ == "__main__":
+    main()
+    print("Exitting program")

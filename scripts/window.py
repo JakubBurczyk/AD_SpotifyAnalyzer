@@ -29,6 +29,7 @@ class Window(QMainWindow):
         self.actions: Dict[str, QAction] = {}
         self.pixmaps: Dict[str, widgets.Pixmap] = {}
         self.textBrowsers: Dict[str, widgets.TextBrowser] = {}
+        self.tabWidgets: Dict[str, widgets.TabWidget] = {}
 
     def say(self, msg=None):
         print(self._name + " | MSG = " + msg)
@@ -69,6 +70,10 @@ class Window(QMainWindow):
 
         for name, pixmap in self.pixmaps.items():
             pixmap.update()
+        pass
+
+        for name, tabWdg in self.tabWidgets.items():
+            tabWdg.update()
         pass
 
     def addAction_(self, name: str, function: Callable):
@@ -118,13 +123,17 @@ class Window(QMainWindow):
         self.spinboxes[name] = spinbox
         return self.spinboxes[name]
 
-    def addPixMap(self, name, path):
+    def addPixMap(self, name, path)-> widgets.Pixmap:
         self.pixmaps[name] = widgets.Pixmap(self, name, path)
         return self.pixmaps[name]
 
-    def addTextBrowser(self, name):
+    def addTextBrowser(self, name)-> widgets.TextBrowser:
         self.textBrowsers[name] = widgets.TextBrowser(self,name)
         return self.textBrowsers[name]
+
+    def addTabWidget(self, name) -> widgets.TabWidget:
+        self.tabWidgets[name] = widgets.TabWidget(self, name)
+        return self.tabWidgets[name]
 
     @property
     def isOpened(self) -> bool:
