@@ -19,7 +19,7 @@ import numpy as np
 from typing import Callable, Iterable, List, Dict
 
 import os
-from abc import ABC
+from abc import ABC, abstractclassmethod
 import window as window
 
 
@@ -113,10 +113,19 @@ class LineEdit(Widget):
     def clear(self):
         self._widget.clear()
     
+
 class SpinBoxAbstract(Widget):
+    _widget: QSpinBox
+
     def __init__(self, win:window.Window, name: str):
         super(SpinBoxAbstract, self).__init__(win, name)
         pass
+
+    def setValue(self, value):
+        self._widget.setValue(value)
+
+    def connectCallbackValueChanged(self, callback:Callable):
+        self._widget.valueChanged.connect(callback)
 
     @property
     def value(self):
@@ -130,7 +139,6 @@ class SpinBox(SpinBoxAbstract):
 
     def __init__(self, win:window.Window, name: str):
         super(SpinBox, self).__init__(win, name)
-        pass
 
 
 class DoubleSpinBox(SpinBoxAbstract):
@@ -397,9 +405,13 @@ class MatplotlibFigure(Widget):
 
     def __init__(self, win: window.Window, name: str):
         super().__init__(win, name)
-
+        plt.style.use('dark_background')
+        
         self.figure = plt.figure()
+        self.figure.set_facecolor("none")
+
         self.canvas = FigureCanvas(self.figure)
+        
         self.toolbar = NavigationToolbar(self.canvas, win)
         
         self._widget.addWidget(self.canvas)
@@ -408,6 +420,9 @@ class MatplotlibFigure(Widget):
     def plotRandom(self):
         data = [random.random() for i in range(10)]
         self.figure.clear()
+        self.figure.tight_layout()
         ax = self.figure.add_subplot(1,1,1)
-        ax.plot(data, '*-')
+        ax.set_facecolor("none")
+        ax.plot(data, 'o-')
+        plt.tight_layout()
         self.canvas.draw()

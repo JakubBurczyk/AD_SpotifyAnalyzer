@@ -5,7 +5,7 @@ from PyQt5 import QtWidgets, uic, QtGui
 from termcolor import colored
 from typing import List, Dict
 import os
-
+import qdarkstyle
 import window as window
 
 
@@ -17,6 +17,7 @@ class GUI:
         self.uisDir =os.path.abspath(os.path.join(os.path.realpath(__file__), "../"*3, "uis"))
         self.windows: Dict[str, window.Window] = {}
         self.app = QtWidgets.QApplication([])
+        self.app.setStyleSheet(qdarkstyle.load_stylesheet())
         print("Initializing GUI")
         pass
 
