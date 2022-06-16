@@ -38,6 +38,9 @@ class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
         self.initTab1()
         self.initTab2()
         pass
+    
+    def hello(self):
+        print(f"Hello ~[{type(self)}]")
 
     def start(self):
         if not self.mainWindow.isOpened:
@@ -47,8 +50,6 @@ class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
         while self.isOpened:
             self.update()
         pass
-
-    
 
 
 if __name__ == "__main__":

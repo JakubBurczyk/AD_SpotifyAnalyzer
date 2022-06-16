@@ -20,10 +20,11 @@ class Mixin_Tab_2():
     def tab_2_widgets(self:SpotifyAnalyzer):
         self.Button2:Button = self.tab_2.addWidget(Button(self.mainWindow,"pushButton_2",self.pshButton2))
         pass
-    
+
     def tab_2_callbacks(self:SpotifyAnalyzer):
         pass
 
-    def pshButton2(self):
+    def pshButton2(self:SpotifyAnalyzer):
         print("Button 2")
+        self.hello()
     pass
