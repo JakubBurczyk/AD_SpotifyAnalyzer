@@ -6,7 +6,7 @@ from widgets import *
 import window as window
 from widgets import Tab
 from PyQt5.QtWidgets import QListWidgetItem
-import _spotifyAnalyzer_tabMethods as tabMethods
+import _tabMethods as tabMethods
 
 
 class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):

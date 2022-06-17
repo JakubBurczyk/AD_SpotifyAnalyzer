@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from spotifyAnalyzer import SpotifyAnalyzer
-    from _spotifyAnalyzer_tabMethods import Mixin_TabMethods
+    from _tabMethods import Mixin_TabMethods
 
 
 class Mixin_Tab_2():
