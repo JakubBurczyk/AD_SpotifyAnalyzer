@@ -17,5 +17,5 @@ print(repr(table))
 print(table.columns.keys())
 
 #with open("data/data.csv",'r',encoding='Latin1') as file:
-df = pd.read_csv("data/data.csv")
+df = pd.read_csv("data/charts.csv")
 print(df.head())
