@@ -2,3 +2,4 @@
 .idea/
 /data/data.csv
 /data/charts.csv
+./scripts/__pycache__/
