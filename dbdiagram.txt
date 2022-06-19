@@ -1,0 +1,49 @@
+Table song {
+  song_id int [pk]
+  title varchar
+  artist_id int[]
+}
+
+Table region {
+  region_id int [pk]
+  name varchar
+}
+ 
+Table artist {
+  artist_id int [pk]
+  name varchar
+}
+
+Table day {
+  day_id int [pk]
+  date date
+}
+ 
+Table category {
+  category_id int [pk]
+  category varchar
+}
+
+Table trend {
+  trend_id int [pk]
+  trend varchar
+}
+
+Table chart {
+  chart_id int [pk]
+  position int
+  song_id int
+  day_id int
+  region_id int
+  category_id int
+  trend_id int
+  streams int
+}
+
+Ref: artist.artist_id <> song.artist_id 
+Ref: chart.song_id > song.song_id 
+Ref: chart.day_id > day.day_id 
+Ref: chart.region_id > region.region_id 
+Ref: chart.category_id > category.category_id 
+Ref: chart.trend_id > trend.trend_id 
+ 
