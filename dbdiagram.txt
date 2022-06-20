@@ -1,7 +1,11 @@
+Table song_artist {
+  song_id int [pk]
+  artist_id int [pk]
+}
+
 Table song {
   song_id int [pk]
   title varchar
-  artist_id int[]
 }
 
 Table region {
@@ -40,7 +44,8 @@ Table chart {
   streams int
 }
 
-Ref: artist.artist_id <> song.artist_id 
+Ref: song.song_id < song_artist.song_id 
+Ref: artist.artist_id - song_artist.artist_id 
 Ref: chart.song_id > song.song_id 
 Ref: chart.day_id > day.day_id 
 Ref: chart.region_id > region.region_id 
