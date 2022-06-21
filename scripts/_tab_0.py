@@ -95,7 +95,7 @@ class Mixin_Tab_0():
         self.textBrowser_threads.appendLineTimed(f"Starting batches End index = {end_index}")
         for i in range(batches):
             self.runSingleBatch(i)
-            self.textBrowser_threads.appendLineTimed(f"Batch [{i}/{batches}] finished")
+            #self.textBrowser_threads.appendLineTimed(f"Batch [{i}/{batches}] finished")
             pass
         pass
         if end_index < size:
