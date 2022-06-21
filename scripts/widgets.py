@@ -1,7 +1,6 @@
 from __future__ import annotations
 import datetime
 from tkinter.messagebox import NO
-from grpc import Call
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar

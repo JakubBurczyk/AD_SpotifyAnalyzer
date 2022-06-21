@@ -1,7 +1,7 @@
 from __future__ import annotations
 from concurrent.futures import thread
 from time import sleep
-
+from multiprocessing import Process
 from gui import GUI
 import os
 import widgets as widgets
@@ -79,14 +79,15 @@ class Mixin_Tab_0():
         if not loaded:
             self.textBrowser_threads.appendLineTimed("Did not load data file")
         else:
-            self.data = self.data.loc[0:100025].copy()
+            #self.data = self.data.loc[0:1050].copy()
             self.createFullTables()
             self.runAllBatches()
-        
+            
         pass
 
     def runAllBatches(self:SpotifyAnalyzer):
         batches = int(len(self.data)/(self.threads_num * self.batch_size))
+        batches = 1
         end_index = batches*self.threads_num * self.batch_size
 
         self.textBrowser_threads.appendLineTimed(f"Starting batches End index = {end_index}")
@@ -97,28 +98,28 @@ class Mixin_Tab_0():
         pass
         self.textBrowser_threads.appendLineTimed(f"Finished all batches")
 
+
     def runSingleBatch(self:SpotifyAnalyzer,batch_cnt):
         thread: threading.Thread
         threads = []
 
         offset = batch_cnt * self.batch_size * self.threads_num
         size = self.batch_size
-
+        
         for i in range(self.threads_num):
             threads.append(threading.Thread(target=self.thread_updateTables, args=(i*size + offset, (i+1)*size + offset - 1)))
 
         for thread in threads:
-            thread.setDaemon(True)
+            thread.setDaemon(False)
 
         for thread in threads:
             thread.start()
 
         for thread in threads:
             thread.join()
-            pass
 
         self.df_chart['streams'] = self.df_chart['streams'].astype(pd.Int64Dtype())
-        print(self.df_chart.loc[99975:100025])
+        print(self.df_chart.loc[990:1010])
 
     def thread_updateTables(self:SpotifyAnalyzer,v1,v2):
         print(f"Thread {v1} to {v2}")
@@ -170,6 +171,18 @@ class Mixin_Tab_0():
         self.df_chart.insert(0, 'chart_id', range(1, 1 + len(self.df_chart)))
         #self.df_chart['streams'] = self.df_chart['streams'].astype('int')
         self.textBrowser_threads.appendLineTimed("Created initial dataframes")
+
+        path = os.path.dirname(self.datapath)
+        path = os.path.join(path,"processed")
+        print(path)
+        self.df_artist.to_csv(path+"\\artist.csv",index=False)
+        self.df_song.to_csv(path+"\\song.csv",index=False)
+        self.df_trend.to_csv(path+"\\trend.csv",index=False)
+        self.df_day.to_csv(path+"\\day.csv",index=False)
+        self.df_category.to_csv(path+"\\category.csv",index=False)
+        self.df_region.to_csv(path+"\\region.csv",index=False)
+        self.df_songArtist.to_csv(path+"\\songArtist.csv",index=False)
+        self.df_chart.to_csv(path+"\\chart.csv",index=False)
         pass
 
     def createEngine(self:SpotifyAnalyzer):
@@ -189,8 +202,8 @@ class Mixin_Tab_0():
     def loadData(self:SpotifyAnalyzer):
         filePath = QFileDialog.getOpenFileName(self.mainWindow, 'Open a file', '', 'CSV file (*.csv)')
         if filePath != ('', ''):
-            path, extension = filePath
-            self.data = pd.read_csv(path)
+            self.datapath, extension = filePath
+            self.data = pd.read_csv(self.datapath)
             self.textBrowser_threads.appendLineTimed("Read CSV file:")
             self.textBrowser_threads.appendLine(self.data.head().__repr__())
             return True
