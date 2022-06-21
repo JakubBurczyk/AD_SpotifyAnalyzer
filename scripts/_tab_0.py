@@ -75,17 +75,27 @@ class Mixin_Tab_0():
         self.batch_size = self.spinBox_batch_size.value
 
         self.createEngine()
-        self.loadData()
-        self.runAllBatches()
+        loaded = self.loadData()
+        if not loaded:
+            self.textBrowser_threads.appendLineTimed("Did not load data file")
+        else:
+            self.data = self.data.loc[0:100025].copy()
+            self.createFullTables()
+            self.runAllBatches()
+        
         pass
 
     def runAllBatches(self:SpotifyAnalyzer):
-        batches = 2
+        batches = int(len(self.data)/(self.threads_num * self.batch_size))
+        end_index = batches*self.threads_num * self.batch_size
 
+        self.textBrowser_threads.appendLineTimed(f"Starting batches End index = {end_index}")
         for i in range(batches):
             self.runSingleBatch(i)
+            self.textBrowser_threads.appendLineTimed(f"Batch [{i}/{batches}] finished")
             pass
         pass
+        self.textBrowser_threads.appendLineTimed(f"Finished all batches")
 
     def runSingleBatch(self:SpotifyAnalyzer,batch_cnt):
         thread: threading.Thread
@@ -95,7 +105,7 @@ class Mixin_Tab_0():
         size = self.batch_size
 
         for i in range(self.threads_num):
-            threads.append(threading.Thread(target=self.thread_toSQL, args=(i*size + offset, (i+1)*size + offset)))
+            threads.append(threading.Thread(target=self.thread_updateTables, args=(i*size + offset, (i+1)*size + offset - 1)))
 
         for thread in threads:
             thread.setDaemon(True)
@@ -107,12 +117,59 @@ class Mixin_Tab_0():
             thread.join()
             pass
 
-        print(["#"*30])
+        self.df_chart['streams'] = self.df_chart['streams'].astype(pd.Int64Dtype())
+        print(self.df_chart.loc[99975:100025])
 
-    def thread_toSQL(self:SpotifyAnalyzer,v1,v2):
-        data = self.data[v1:v2]
+    def thread_updateTables(self:SpotifyAnalyzer,v1,v2):
+        print(f"Thread {v1} to {v2}")
+        df_songArtist_cp = self.df_songArtist.loc[v1:v2].copy()
 
+        df_songArtist_cp['song_id'] = df_songArtist_cp['song_id'].map(lambda x: self.df_song[self.df_song['title'] == x].song_id.values.astype(int)[0])
+        df_songArtist_cp['artist_id'] = df_songArtist_cp['artist_id'].map(lambda x: self.df_artist[self.df_artist['name'] == x].artist_id.values.astype(int)[0])
+        self.df_songArtist.update(df_songArtist_cp)
 
+        df_chart_cp = self.df_chart.loc[v1:v2].copy()
+        df_chart_cp['song_id'] = df_chart_cp['song_id'].map(lambda x: self.df_song[self.df_song['title'] == x].song_id.values.astype(int)[0])
+        df_chart_cp['day_id'] = df_chart_cp['day_id'].map(lambda x: self.df_day[self.df_day['date'] == x].day_id.values.astype(int)[0])
+        df_chart_cp['region_id'] = df_chart_cp['region_id'].map(lambda x: self.df_region[self.df_region['name'] == x].region_id.values.astype(int)[0])
+        df_chart_cp['category_id'] = df_chart_cp['category_id'].map(lambda x: self.df_category[self.df_category['name'] == x].category_id.values.astype(int)[0])
+        df_chart_cp['trend_id'] = df_chart_cp['trend_id'].map(lambda x: self.df_trend[self.df_trend['trend'] == x].trend_id.values.astype(int)[0])
+        self.df_chart.update(df_chart_cp)
+        pass
+
+    def createFullTables(self:SpotifyAnalyzer):
+        self.textBrowser_threads.appendLineTimed("Creating initial dataframes")
+        # Artist
+        self.df_artist = pd.DataFrame(self.data['artist'].unique(), columns=['name'])
+        self.df_artist = self.df_artist.assign(name=self.df_artist['name'].str.split(', ')).explode('name')
+        self.df_artist.reset_index(drop = True, inplace=True)
+        self.df_artist.insert(0, 'artist_id', range(1, 1 + len(self.df_artist)))
+        # Song
+        self.df_song = pd.DataFrame(self.data['title'].unique(), columns=['title'])
+        self.df_song.insert(0, 'song_id', range(1, 1 + len(self.df_song)))
+        # Trend
+        self.df_trend = pd.DataFrame(self.data['trend'].unique(), columns=['trend'])
+        self.df_trend.insert(0, 'trend_id', range(1, 1 + len(self.df_trend)))
+        # Day
+        self.df_day = pd.DataFrame(self.data['date'].unique(), columns=['date'])
+        self.df_day.insert(0, 'day_id', range(1, 1 + len(self.df_day)))
+        # Category
+        self.df_category = pd.DataFrame(self.data['chart'].unique(), columns=['name'])
+        self.df_category.insert(0, 'category_id', range(1, 1 + len(self.df_category)))
+        # Region
+        self.df_region = pd.DataFrame(self.data['region'].unique(), columns=['name'])
+        self.df_region.insert(0, 'region_id', range(1, 1 + len(self.df_region)))
+        # Song Artist
+        self.df_songArtist = self.data[['title', 'artist']].drop_duplicates().reset_index().drop(columns = ['index'])
+        self.df_songArtist.rename(columns = {'title': 'song_id', 'artist': 'artist_id'}, inplace = True)
+        self.df_songArtist = self.df_songArtist.assign(artist_id=self.df_songArtist['artist_id'].str.split(', ')).explode('artist_id')
+        self.df_songArtist.reset_index(drop = True, inplace=True)
+        # Chart
+        self.df_chart = self.data[['rank', 'title', 'date', 'region', 'chart', 'trend', 'streams']].drop_duplicates().reset_index().drop(columns = ['index'])
+        self.df_chart = self.df_chart.rename(columns = {'title':'song_id', 'rank':'position', 'date':'day_id', 'region':'region_id', 'chart':'category_id', 'trend':'trend_id'})
+        self.df_chart.insert(0, 'chart_id', range(1, 1 + len(self.df_chart)))
+        #self.df_chart['streams'] = self.df_chart['streams'].astype('int')
+        self.textBrowser_threads.appendLineTimed("Created initial dataframes")
         pass
 
     def createEngine(self:SpotifyAnalyzer):
@@ -136,6 +193,9 @@ class Mixin_Tab_0():
             self.data = pd.read_csv(path)
             self.textBrowser_threads.appendLineTimed("Read CSV file:")
             self.textBrowser_threads.appendLine(self.data.head().__repr__())
+            return True
+
+        return False
         pass
 
     
