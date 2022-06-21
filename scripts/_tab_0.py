@@ -1,7 +1,7 @@
 from __future__ import annotations
 from concurrent.futures import thread
 from time import sleep
-from multiprocessing import Process
+from multiprocessing import Process, Lock
 from gui import GUI
 import os
 import widgets as widgets
@@ -30,6 +30,8 @@ class Mixin_Tab_0():
         self.thread_labels = []
         self.threads_num = 4
         self.batch_size = 10000
+        self.datapath = ""
+        self.lock = Lock()
         pass
 
     def tab_0_widgets(self:SpotifyAnalyzer):
@@ -79,15 +81,15 @@ class Mixin_Tab_0():
         if not loaded:
             self.textBrowser_threads.appendLineTimed("Did not load data file")
         else:
-            #self.data = self.data.loc[0:1050].copy()
+            self.data = self.data.loc[0:99999].copy()
             self.createFullTables()
             self.runAllBatches()
             
         pass
 
     def runAllBatches(self:SpotifyAnalyzer):
-        batches = int(len(self.data)/(self.threads_num * self.batch_size))
-        batches = 1
+        size = len(self.data)
+        batches = int(size/(self.threads_num * self.batch_size))
         end_index = batches*self.threads_num * self.batch_size
 
         self.textBrowser_threads.appendLineTimed(f"Starting batches End index = {end_index}")
@@ -96,6 +98,32 @@ class Mixin_Tab_0():
             self.textBrowser_threads.appendLineTimed(f"Batch [{i}/{batches}] finished")
             pass
         pass
+        if end_index < size:
+            self.thread_updateTables(end_index,size)
+            pass
+
+        self.df_chart['streams'] = self.df_chart['streams'].astype(pd.Int64Dtype())
+
+        path = os.path.dirname(self.datapath)
+        self.df_artist.to_csv(path+'\\df_artist.csv',index=False)
+        self.df_song.to_csv(path+'\\df_song.csv',index=False)
+        self.df_songArtist.to_csv(path+'\\df_songArtist.csv',index=False)
+        self.df_trend.to_csv(path+'\\df_trend.csv',index=False)
+        self.df_day.to_csv(path+'\\df_day.csv',index=False)
+        self.df_region.to_csv(path+'\\df_region.csv',index=False)
+        self.df_category.to_csv(path+'\\df_category.csv',index=False)
+        self.df_chart.to_csv(path+'\\df_chart.csv',index=False)
+
+        
+        self.df_artist.to_sql('artist', self.engine, if_exists='replace', index = False)
+        self.df_song.to_sql('song', self.engine, if_exists='replace', index = False)
+        self.df_songArtist.to_sql('song_artist', self.engine, if_exists='replace', index = False)
+        self.df_trend.to_sql('trend', self.engine, if_exists='replace', index = False)
+        self.df_day.to_sql('day', self.engine, if_exists='replace', index = False)
+        self.df_region.to_sql('region', self.engine, if_exists='replace', index = False)
+        self.df_category.to_sql('category', self.engine, if_exists='replace', index = False)
+        self.df_chart.to_sql('chart', self.engine, if_exists='replace', index = False)
+
         self.textBrowser_threads.appendLineTimed(f"Finished all batches")
 
 
@@ -118,8 +146,7 @@ class Mixin_Tab_0():
         for thread in threads:
             thread.join()
 
-        self.df_chart['streams'] = self.df_chart['streams'].astype(pd.Int64Dtype())
-        print(self.df_chart.loc[990:1010])
+        #print(self.df_chart.loc[990:1010])
 
     def thread_updateTables(self:SpotifyAnalyzer,v1,v2):
         print(f"Thread {v1} to {v2}")
@@ -127,7 +154,7 @@ class Mixin_Tab_0():
 
         df_songArtist_cp['song_id'] = df_songArtist_cp['song_id'].map(lambda x: self.df_song[self.df_song['title'] == x].song_id.values.astype(int)[0])
         df_songArtist_cp['artist_id'] = df_songArtist_cp['artist_id'].map(lambda x: self.df_artist[self.df_artist['name'] == x].artist_id.values.astype(int)[0])
-        self.df_songArtist.update(df_songArtist_cp)
+        
 
         df_chart_cp = self.df_chart.loc[v1:v2].copy()
         df_chart_cp['song_id'] = df_chart_cp['song_id'].map(lambda x: self.df_song[self.df_song['title'] == x].song_id.values.astype(int)[0])
@@ -135,7 +162,10 @@ class Mixin_Tab_0():
         df_chart_cp['region_id'] = df_chart_cp['region_id'].map(lambda x: self.df_region[self.df_region['name'] == x].region_id.values.astype(int)[0])
         df_chart_cp['category_id'] = df_chart_cp['category_id'].map(lambda x: self.df_category[self.df_category['name'] == x].category_id.values.astype(int)[0])
         df_chart_cp['trend_id'] = df_chart_cp['trend_id'].map(lambda x: self.df_trend[self.df_trend['trend'] == x].trend_id.values.astype(int)[0])
+        self.lock.acquire()
+        self.df_songArtist.update(df_songArtist_cp)
         self.df_chart.update(df_chart_cp)
+        self.lock.release()
         pass
 
     def createFullTables(self:SpotifyAnalyzer):
