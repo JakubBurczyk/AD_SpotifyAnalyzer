@@ -27,6 +27,7 @@ class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
 
     def initWidgets(self):
         self.mainTabWidget:TabWidget = self.mainWindow.addTabWidget("tabWidget_main")
+        self.tab_0: Tab = self.mainTabWidget.addTab("tab_0",0)
         self.tab_1: Tab = self.mainTabWidget.addTab("tab_1",1)
         self.tab_2: Tab = self.mainTabWidget.addTab("tab_2",2)
         pass
@@ -34,10 +35,6 @@ class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
     def initCallbacks(self):
         self.mainTabWidget.connectChange(lambda index: print(f"Changed to tab [{index}]"))
     
-    def initTabs(self):
-        self.initTab1()
-        self.initTab2()
-        pass
     
     def hello(self):
         print(f"Hello ~[{type(self)}]")

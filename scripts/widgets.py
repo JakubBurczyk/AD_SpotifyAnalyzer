@@ -113,6 +113,10 @@ class LineEdit(Widget):
     def clear(self):
         self._widget.clear()
     
+    @property
+    def text(self):
+        return self._widget.text()
+    
 
 class SpinBoxAbstract(Widget):
     _widget: QSpinBox
@@ -258,6 +262,9 @@ class TextBrowser(Widget):
         except:
             pass
         pass
+
+    def appendLineTimed(self, line):
+        self.appendLine(f"[{datetime.datetime.now()}] {line}")
 
     def clear(self):
         self._widget.clear()
