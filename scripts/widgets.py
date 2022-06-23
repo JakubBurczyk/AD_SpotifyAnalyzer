@@ -355,6 +355,9 @@ class ListWidget(Widget):
         else:
             return None
 
+    def clear(self):
+        self._widget.clear()
+
 
 
 

@@ -63,6 +63,7 @@ class Mixin_Tab_1():
         print("Starting thread query")
         session_stmt = self.session.query(type)
         session_results = session_stmt.all()
+        self.list_songs.clear()
         try:
             for result in session_results:
                 self.list_songs.addItem(bytes(result.title, 'utf-16').decode('utf-16', 'ignore'))
