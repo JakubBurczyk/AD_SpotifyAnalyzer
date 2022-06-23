@@ -21,34 +21,19 @@ if TYPE_CHECKING:
 
 class Mixin_TabMethods(Mixin_Tab_0, Mixin_Tab_1, Mixin_Tab_2):
     def __init__(self) -> None:
+        print("Mixin init")
         self.queries: dict(int,Callable) = {}
-        super().__init__()
+        self.initTabs()
         pass
 
     def initTabs(self):
-        self.initTab0()
-        self.initTab1()
-        self.initTab2()
+        Mixin_Tab_0.__init__(self)
+        Mixin_Tab_1.__init__(self)
+        Mixin_Tab_2.__init__(self)
         pass
 
     def queryTab(self:SpotifyAnalyzer,index):
         if index in self.queries:
             self.queries[index]()
-        pass
-
-    def initTab0(self:SpotifyAnalyzer):
-        self.tab_0_vars()
-        self.tab_0_widgets()
-        self.tab_0_callbacks()
-        pass
-
-    def initTab1(self:SpotifyAnalyzer):
-        self.tab_1_widgets()
-        self.tab_1_callbacks()
-        pass
-
-    def initTab2(self:SpotifyAnalyzer):
-        self.tab_2_widgets()
-        self.tab_2_callbacks()
         pass
         

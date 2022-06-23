@@ -28,15 +28,18 @@ if TYPE_CHECKING:
 
 class Mixin_Tab_0():
 
-    def tab_0_vars(self):
+    def __init__(self) -> None:
         self.engine: sqlalchemy.engine.Engine = None
         self.session:sessionmaker = None
         self.thread_labels = []
         self.threads_num = 4
         self.batch_size = 10000
         self.datapath = ""
+
         self.lock = Lock()
 
+        self.tab_0_widgets()
+        self.tab_0_callbacks()
         pass
 
     def tab_0_widgets(self:SpotifyAnalyzer):

@@ -12,13 +12,16 @@ class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
     mainWindow: window.Window
 
     def __init__(self):
+        
         super().__init__()
-        tabMethods.Mixin_TabMethods.__init__(self)
         self.uisDir = os.path.abspath(os.path.join(os.path.realpath(__file__), "../"*2, "uis"))
         self.initWindows()
         self.initWidgets()
         self.initCallbacks()
-        self.initTabs()
+
+        tabMethods.Mixin_TabMethods.__init__(self)
+
+        #self.initTabs()
 
     def initWindows(self):
         self.mainWindow = self.addWindow("mainWindow","mainWindow.ui")    

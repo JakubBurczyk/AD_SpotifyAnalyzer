@@ -34,14 +34,17 @@ class Widget(ABC):
 
     def disable(self) -> None:
         self._widget.setEnabled(False)
+        return self
         pass
 
     def enable(self) -> None:
         self._widget.setEnabled(True)
+        return self
         pass
 
     def setEnabled(self, state: bool):
         self._widget.setEnabled(state)
+        return self
         pass
 
     def toggleEnable(self) -> bool:
