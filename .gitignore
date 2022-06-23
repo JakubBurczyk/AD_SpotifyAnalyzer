@@ -4,3 +4,4 @@
 /data/charts.csv
 ./scripts/__pycache__/
 data/
+notebooks/tests/
