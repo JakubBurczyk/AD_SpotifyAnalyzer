@@ -288,9 +288,8 @@ class ListWidget(Widget):
         super().__init__(win, name)
         #self._widget.addItems([f"pos {v}" for v in range(20)])
 
-    def addItems(self, items:Iterable[str]):
-        if isinstance(items, Iterable[str]):
-            self._widget.addItems(items)
+    def addItems(self, items):
+        self._widget.addItems(items)
         return self
 
     def addItem(self, item:str):
