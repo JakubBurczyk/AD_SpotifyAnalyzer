@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from threading import Thread, Lock
 from gui import GUI
 import os
 import widgets as widgets
@@ -21,6 +22,7 @@ class Mixin_Tab_1():
 
     def __init__(self:Union[SpotifyAnalyzer, Mixin_TabMethods]):
         self.queries[1] = self.query
+        self.lock = Lock()
 
     def tab_1_widgets(self:Union[SpotifyAnalyzer, Mixin_TabMethods]):
         self.Button1:Button = self.tab_1.addWidget(Button(self.mainWindow,"pushButton", self.pshButton))
@@ -43,10 +45,25 @@ class Mixin_Tab_1():
             print(f"Clicked list item = [{item.text()}]")
 
     def query(self:SpotifyAnalyzer):
-        session_stmt = self.session.query(Artist)
+        #session_stmt = self.session.query(Song)
+        #session_results = session_stmt.all()
+        #for result in session_results:
+        #    self.List1.addItem(result.name)
+        #pass
+
+        thread = Thread(target=self.threadQuery,args=(Song,self.lock))
+        thread.start()
+        
+    def threadQuery(self, type, lock:Lock):
+        print("Starting thread query")
+        session_stmt = self.session.query(type)
+        lock.acquire()
         session_results = session_stmt.all()
+        lock.release()
         for result in session_results:
-            self.List1.addItem(result.name)
+
+            self.List1.addItem(bytes(result.title, 'utf-16').decode('utf-16', 'ignore'))
+            pass
         pass
 
     def pshButton(self):

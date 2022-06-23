@@ -42,8 +42,12 @@ class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
             print("Opening main window")
             self.mainWindow.open()
 
+
         while self.isOpened:
-            self.update()
+            try:
+                self.update()
+            except Exception as e:
+                pass
         pass
     
     def changedTab(self,index):
