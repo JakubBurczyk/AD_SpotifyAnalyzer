@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from grpc import Call
-
 from gui import GUI
 import os
 import widgets as widgets
