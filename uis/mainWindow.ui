@@ -53,6 +53,11 @@
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget_main">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
@@ -70,22 +75,32 @@
       </property>
       <widget class="QWidget" name="tab_0">
        <attribute name="title">
-        <string>Tab 0</string>
+        <string>Database settings</string>
        </attribute>
        <widget class="QWidget" name="verticalLayoutWidget">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>160</width>
-          <height>311</height>
+          <width>231</width>
+          <height>401</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
           <layout class="QFormLayout" name="formLayout_db_data">
            <item row="0" column="0">
             <widget class="QLabel" name="label_db_ip">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Database IP</string>
              </property>
@@ -93,6 +108,17 @@
            </item>
            <item row="0" column="1">
             <widget class="QLineEdit" name="lineEdit_db_ip">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="statusTip">
+              <string>Enter database IP you wish to connect to</string>
+             </property>
              <property name="text">
               <string>127.0.0.1</string>
              </property>
@@ -100,6 +126,11 @@
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_db_port">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Database Port</string>
              </property>
@@ -107,6 +138,11 @@
            </item>
            <item row="1" column="1">
             <widget class="QLineEdit" name="lineEdit_db_port">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>5432</string>
              </property>
@@ -114,6 +150,11 @@
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_db_name">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Database Name</string>
              </property>
@@ -121,6 +162,11 @@
            </item>
            <item row="2" column="1">
             <widget class="QLineEdit" name="lineEdit_db_name">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>spotify</string>
              </property>
@@ -128,6 +174,11 @@
            </item>
            <item row="3" column="0">
             <widget class="QLabel" name="label_db_user">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>User</string>
              </property>
@@ -135,6 +186,11 @@
            </item>
            <item row="3" column="1">
             <widget class="QLineEdit" name="lineEdit_db_user">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>admin</string>
              </property>
@@ -142,6 +198,11 @@
            </item>
            <item row="4" column="0">
             <widget class="QLabel" name="label_db_pass">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Password</string>
              </property>
@@ -149,6 +210,11 @@
            </item>
            <item row="4" column="1">
             <widget class="QLineEdit" name="lineEdit_db_pass">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>123</string>
              </property>
@@ -158,6 +224,14 @@
          </item>
          <item>
           <widget class="QListWidget" name="listWidget_tables">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="tabKeyNavigation">
+            <bool>true</bool>
+           </property>
            <item>
             <property name="text">
              <string>Artist</string>
@@ -202,6 +276,11 @@
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_test">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Test Database</string>
            </property>
@@ -212,27 +291,48 @@
        <widget class="QWidget" name="verticalLayoutWidget_2">
         <property name="geometry">
          <rect>
-          <x>190</x>
+          <x>270</x>
           <y>10</y>
-          <width>1041</width>
+          <width>961</width>
           <height>601</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <layout class="QVBoxLayout" name="verticalLayout_textBrowser">
          <item>
-          <widget class="QTextBrowser" name="textBrowser_tab_0"/>
+          <widget class="QTextBrowser" name="textBrowser_tab_0">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+          </widget>
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout_textBrowser_buttons">
            <item row="0" column="1">
             <widget class="QPushButton" name="pushButton_clear">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="text">
-              <string>Clear</string>
+              <string>CLEAR</string>
              </property>
             </widget>
            </item>
            <item row="0" column="0">
             <widget class="QPushButton" name="pushButton_empty">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -252,8 +352,8 @@
          <rect>
           <x>120</x>
           <y>470</y>
-          <width>75</width>
-          <height>23</height>
+          <width>101</width>
+          <height>41</height>
          </rect>
         </property>
         <property name="text">
@@ -288,7 +388,7 @@
          <number>-1</number>
         </property>
         <property name="sortingEnabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QFrame" name="verticalFrame">
@@ -357,8 +457,8 @@
          <rect>
           <x>230</x>
           <y>140</y>
-          <width>75</width>
-          <height>23</height>
+          <width>111</width>
+          <height>41</height>
          </rect>
         </property>
         <property name="text">
@@ -383,10 +483,22 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <tabstops>
+  <tabstop>tabWidget_main</tabstop>
+  <tabstop>lineEdit_db_ip</tabstop>
+  <tabstop>lineEdit_db_port</tabstop>
+  <tabstop>lineEdit_db_name</tabstop>
+  <tabstop>lineEdit_db_user</tabstop>
+  <tabstop>lineEdit_db_pass</tabstop>
+  <tabstop>listWidget_tables</tabstop>
+  <tabstop>pushButton_test</tabstop>
+  <tabstop>textBrowser_tab_0</tabstop>
+  <tabstop>pushButton_clear</tabstop>
+  <tabstop>pushButton_empty</tabstop>
+  <tabstop>spinBox</tabstop>
   <tabstop>listWidget</tabstop>
+  <tabstop>pushButton_2</tabstop>
   <tabstop>lineEdit</tabstop>
   <tabstop>pushButton</tabstop>
-  <tabstop>pushButton_2</tabstop>
  </tabstops>
  <resources/>
  <connections/>

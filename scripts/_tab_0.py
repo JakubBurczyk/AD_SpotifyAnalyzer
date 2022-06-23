@@ -36,6 +36,7 @@ class Mixin_Tab_0():
         self.batch_size = 10000
         self.datapath = ""
         self.lock = Lock()
+
         pass
 
     def tab_0_widgets(self:SpotifyAnalyzer):

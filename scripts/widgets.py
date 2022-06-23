@@ -244,6 +244,7 @@ class TextBrowser(Widget):
 
     def __init__(self, win: window.Window, name: str):
         super().__init__(win, name)
+        self.savedItems = None
         pass
 
     def setText(self, text:str):
@@ -303,7 +304,32 @@ class ListWidget(Widget):
         return self
 
     def getItems(self) -> List[QListWidgetItem]:
-        return self._widget.items()
+        #items = self._widget.items()
+        items = []
+        for index in range(self._widget.count()):
+            items.append(self._widget.item(index))
+        return items
+
+    def saveItems(self):
+        self.savedItems = self.getItems()
+    
+    def restoreItems(self):
+        if self.savedItems is not None:
+            self._widget.clear()
+            self._widget.addItmes(self.savedItems)
+        pass
+    
+    def unhideAll(self):
+        for item in self.getItems():
+            item.setHidden(False)
+        pass
+
+    def filterItems(self,filterText:str):
+        item:QListWidgetItem
+        for item in self.getItems():
+            hidden = filterText.lower() not in item.text().lower()
+            item.setHidden(hidden)
+        pass
 
     def getItemsText(self):
         item: QListWidgetItem
@@ -313,11 +339,18 @@ class ListWidget(Widget):
         return itemsText
     
     def getSelected(self) -> QListWidgetItem:
-        return self._widget.selectedItems()[0]
+        if self._widget.selectedItems() != []:
+            return self._widget.selectedItems()[0]
+        else:
+            return None
 
     def getSelectedText(self) -> str:
         #print(self.getSelected())
-        return self.getSelected().text()
+        selected = self.getSelected()
+        if selected is not None:
+            return selected.text()
+        else:
+            return None
 
 
 
@@ -345,11 +378,11 @@ class Tab(Widget):
 
 class TabWidget(Widget):
     _widget = QTabWidget
-    tabs = Dict[str, Tab]
+    tabs = Dict[int, Tab]
 
     def __init__(self, win: window.Window, name: str):
         super().__init__(win, name)
-        self.tabs: Dict[str, Tab] = {}
+        self.tabs: Dict[int, Tab] = {}
         self.updatable = False
         
         pass
@@ -358,8 +391,8 @@ class TabWidget(Widget):
         self._widget.currentChanged.connect(callback)
     
     def addTab(self,name: str, index: int) -> widgets.Tab:
-        self.tabs[name] = Tab(self._window, name, index)
-        return self.tabs[name]
+        self.tabs[index] = Tab(self._window, name, index)
+        return self.tabs[index]
 
     def addToTab(self,tab, widget):
         target_tab:Tab = None
@@ -401,7 +434,7 @@ class TabWidget(Widget):
     def updateCurrentTab(self):
         currentIndex = self.currentIndex()
         tab: Tab
-        for name, tab in self.tabs.items():
+        for index, tab in self.tabs.items():
             if tab.updatable and tab.index == currentIndex:
                 #print(f"Current tab [{currentIndex}] Updtbl [{tab.updatable}] Tab idx [{tab.index}]")
                 tab.update()
@@ -411,7 +444,7 @@ class TabWidget(Widget):
     def update(self):
         if self.updatable:
             self.updateCurrentTab()
-    
+
 
 class MatplotlibFigure(Widget):
     _widget:QVBoxLayout
@@ -429,6 +462,21 @@ class MatplotlibFigure(Widget):
         
         self._widget.addWidget(self.canvas)
         self._widget.addWidget(self.toolbar)
+
+    def addSubplot(self,row,col,idx):
+        ax = self.figure.add_subplot(row,col,idx)
+        ax.set_facecolor("none")
+        return ax
+        pass
+
+    def clearFigure(self):
+        self.figure.clear()
+        self.figure.tight_layout()
+        
+    def plotAxes(self):
+        plt.tight_layout()
+        self.canvas.draw()
+        pass
 
     def plotRandom(self):
         data = [random.random() for i in range(10)]

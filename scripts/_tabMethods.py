@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from grpc import Call
+
 from gui import GUI
 import os
 import widgets as widgets
@@ -18,11 +20,20 @@ if TYPE_CHECKING:
     
 
 class Mixin_TabMethods(Mixin_Tab_0, Mixin_Tab_1, Mixin_Tab_2):
+    def __init__(self) -> None:
+        self.queries: dict(int,Callable) = {}
+        super().__init__()
+        pass
 
     def initTabs(self):
         self.initTab0()
         self.initTab1()
         self.initTab2()
+        pass
+
+    def queryTab(self:SpotifyAnalyzer,index):
+        if index in self.queries:
+            self.queries[index]()
         pass
 
     def initTab0(self:SpotifyAnalyzer):

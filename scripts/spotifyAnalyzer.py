@@ -13,7 +13,7 @@ class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
 
     def __init__(self):
         super().__init__()
-
+        tabMethods.Mixin_TabMethods.__init__(self)
         self.uisDir = os.path.abspath(os.path.join(os.path.realpath(__file__), "../"*2, "uis"))
         self.initWindows()
         self.initWidgets()
@@ -34,7 +34,6 @@ class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
     def initCallbacks(self):
         self.mainTabWidget.connectChange(self.changedTab)
     
-
     def hello(self):
         print(f"Hello ~[{type(self)}]")
 
@@ -49,7 +48,7 @@ class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
     
     def changedTab(self,index):
         self.createEngine()
-        pass
+        self.queryTab(index)
 
 if __name__ == "__main__":
     app = SpotifyAnalyzer()
