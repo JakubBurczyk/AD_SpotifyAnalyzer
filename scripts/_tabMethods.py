@@ -29,7 +29,6 @@ class Mixin_TabMethods(Mixin_Tab_0, Mixin_Tab_1, Mixin_Tab_2):
         self.tab_0_vars()
         self.tab_0_widgets()
         self.tab_0_callbacks()
-        self.tab_0_process()
         pass
 
     def initTab1(self:SpotifyAnalyzer):

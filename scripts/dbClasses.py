@@ -1,3 +1,4 @@
+from unicodedata import category
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -76,4 +77,4 @@ class Chart(Base):
     streams = Column(Integer)
 
     def __repr__(self):
-        return "<chart(id='{0}', position={1}, song={2}, streams={3})>".format(self.chart_id, self.position, self.song_id, self.streams)
+        return f"<chart(id='{self.chart_id}', position={self.position}, song_id={self.song_id}, day_id={self.day_id}, region_id={self.region_id}, category_id={self.category_id}, trend_id={self.trend_id}, streams={self.streams})>"

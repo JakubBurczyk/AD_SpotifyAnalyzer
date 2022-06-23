@@ -32,9 +32,9 @@ class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
         pass
 
     def initCallbacks(self):
-        self.mainTabWidget.connectChange(lambda index: print(f"Changed to tab [{index}]"))
+        self.mainTabWidget.connectChange(self.changedTab)
     
-    
+
     def hello(self):
         print(f"Hello ~[{type(self)}]")
 
@@ -46,7 +46,10 @@ class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
         while self.isOpened:
             self.update()
         pass
-
+    
+    def changedTab(self,index):
+        self.createEngine()
+        pass
 
 if __name__ == "__main__":
     app = SpotifyAnalyzer()

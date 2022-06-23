@@ -1,6 +1,7 @@
 from __future__ import annotations
 import datetime
 from tkinter.messagebox import NO
+from turtle import end_fill
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
@@ -260,10 +261,16 @@ class TextBrowser(Widget):
             pass
         except:
             pass
+        
         pass
 
     def appendLineTimed(self, line):
-        self.appendLine(f"[{datetime.datetime.now()}] {line}")
+        if isinstance(line, str):
+            self.appendLine(f"[{datetime.datetime.now()}] {line}")
+        else:
+            self.appendLine(f"[{datetime.datetime.now()}]")
+            self.appendLine(line)
+
 
     def clear(self):
         self._widget.clear()
@@ -275,7 +282,7 @@ class ListWidget(Widget):
 
     def __init__(self, win: window.Window, name: str):
         super().__init__(win, name)
-        self._widget.addItems([f"pos {v}" for v in range(20)])
+        #self._widget.addItems([f"pos {v}" for v in range(20)])
 
     def addItems(self, items:Iterable[str]):
         if isinstance(items, Iterable[str]):

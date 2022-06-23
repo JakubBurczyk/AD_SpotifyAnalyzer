@@ -72,282 +72,175 @@
        <attribute name="title">
         <string>Tab 0</string>
        </attribute>
-       <widget class="QWidget" name="formLayoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>40</y>
-          <width>158</width>
-          <height>174</height>
-         </rect>
-        </property>
-        <layout class="QFormLayout" name="formLayout_db_data">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_db_ip">
-           <property name="text">
-            <string>Database IP</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="lineEdit_db_ip">
-           <property name="text">
-            <string>127.0.0.1</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_db_port">
-           <property name="text">
-            <string>Database Port</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="lineEdit_db_port">
-           <property name="text">
-            <string>5432</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_db_user">
-           <property name="text">
-            <string>User</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QLineEdit" name="lineEdit_db_user">
-           <property name="text">
-            <string>admin</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_db_pass">
-           <property name="text">
-            <string>Password</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="lineEdit_db_pass">
-           <property name="text">
-            <string>123</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_db_name">
-           <property name="text">
-            <string>Database Name</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QLineEdit" name="lineEdit_db_name">
-           <property name="text">
-            <string>spotify</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
        <widget class="QWidget" name="verticalLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>30</x>
-          <y>230</y>
+          <x>10</x>
+          <y>10</y>
           <width>160</width>
-          <height>186</height>
+          <height>311</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_createDb">
+        <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <layout class="QFormLayout" name="formLayout_create_vars">
+          <layout class="QFormLayout" name="formLayout_db_data">
            <item row="0" column="0">
-            <widget class="QLabel" name="label_batch">
+            <widget class="QLabel" name="label_db_ip">
              <property name="text">
-              <string>Batch size</string>
+              <string>Database IP</string>
              </property>
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QSpinBox" name="spinBox_batch_size">
-             <property name="showGroupSeparator" stdset="0">
-              <bool>true</bool>
-             </property>
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="maximum">
-              <number>250000</number>
-             </property>
-             <property name="singleStep">
-              <number>10000</number>
-             </property>
-             <property name="value">
-              <number>2</number>
+            <widget class="QLineEdit" name="lineEdit_db_ip">
+             <property name="text">
+              <string>127.0.0.1</string>
              </property>
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="label_threads">
+            <widget class="QLabel" name="label_db_port">
              <property name="text">
-              <string>Threads</string>
+              <string>Database Port</string>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QSpinBox" name="spinBox_threads">
-             <property name="showGroupSeparator" stdset="0">
-              <bool>true</bool>
-             </property>
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="maximum">
-              <number>100</number>
-             </property>
-             <property name="singleStep">
-              <number>1</number>
-             </property>
-             <property name="value">
-              <number>2</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_db_create">
-           <property name="text">
-            <string>Create Database</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QFormLayout" name="formLayout_threads">
-           <property name="labelAlignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="formAlignment">
-            <set>Qt::AlignHCenter|Qt::AlignTop</set>
-           </property>
-           <property name="leftMargin">
-            <number>10</number>
-           </property>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_th_1">
+            <widget class="QLineEdit" name="lineEdit_db_port">
              <property name="text">
-              <string>TH (1): IDLE</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLabel" name="label_th_2">
-             <property name="text">
-              <string>TH (2): IDLE</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <string>5432</string>
              </property>
             </widget>
            </item>
            <item row="2" column="0">
-            <widget class="QLabel" name="label_th_3">
+            <widget class="QLabel" name="label_db_name">
              <property name="text">
-              <string>TH (3): IDLE</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <string>Database Name</string>
              </property>
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QLabel" name="label_th_4">
+            <widget class="QLineEdit" name="lineEdit_db_name">
              <property name="text">
-              <string>TH (4): IDLE</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <string>spotify</string>
              </property>
             </widget>
            </item>
            <item row="3" column="0">
-            <widget class="QLabel" name="label_th_5">
+            <widget class="QLabel" name="label_db_user">
              <property name="text">
-              <string>TH (5): IDLE</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <string>User</string>
              </property>
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QLabel" name="label_th_6">
+            <widget class="QLineEdit" name="lineEdit_db_user">
              <property name="text">
-              <string>TH (6): IDLE</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <string>admin</string>
              </property>
             </widget>
            </item>
            <item row="4" column="0">
-            <widget class="QLabel" name="label_th_7">
+            <widget class="QLabel" name="label_db_pass">
              <property name="text">
-              <string>TH (7): IDLE</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <string>Password</string>
              </property>
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QLabel" name="label_th_8">
+            <widget class="QLineEdit" name="lineEdit_db_pass">
              <property name="text">
-              <string>TH (8): IDLE</string>
+              <string>123</string>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QListWidget" name="listWidget_tables">
+           <item>
+            <property name="text">
+             <string>Artist</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Song</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Song Artist</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Trend</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Day</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Region</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Category</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Chart</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_test">
+           <property name="text">
+            <string>Test Database</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="verticalLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>10</y>
+          <width>1041</width>
+          <height>601</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_textBrowser">
+         <item>
+          <widget class="QTextBrowser" name="textBrowser_tab_0"/>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="gridLayout_textBrowser_buttons">
+           <item row="0" column="1">
+            <widget class="QPushButton" name="pushButton_clear">
+             <property name="text">
+              <string>Clear</string>
              </property>
             </widget>
            </item>
            <item row="0" column="0">
-            <widget class="QLabel" name="label_2">
+            <widget class="QPushButton" name="pushButton_empty">
              <property name="text">
-              <string>Processed rows</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLCDNumber" name="lcdNumber_processed">
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
-             </property>
-             <property name="segmentStyle">
-              <enum>QLCDNumber::Flat</enum>
+              <string/>
              </property>
             </widget>
            </item>
           </layout>
          </item>
         </layout>
-       </widget>
-       <widget class="QTextBrowser" name="textBrowser_threads">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>30</y>
-          <width>861</width>
-          <height>391</height>
-         </rect>
-        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_1">
