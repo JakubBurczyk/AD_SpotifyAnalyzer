@@ -81,63 +81,28 @@ class Mixin_Tab_1():
 
     def query(self:SpotifyAnalyzer):
         
-        q1 = self.session.query(Song.title, Artist.name
+        q1 = self.session.query(Song.title
             ).filter(
-                SongArtist.song_id == Song.song_id,
-                SongArtist.artist_id == Artist.artist_id
             )
 
         q2 = self.session.query(Region.name
             ).filter(
-        )
+            )
 
-        results = [pd.DataFrame()]*2
-        thread_songs = Thread(target=self.threadQuery,args=(q1,results,0))
-        thread_region = Thread(target=self.threadQuery,args=(q2,results,1))
+        thread_songs = Thread(target=self.threadQuery,args=(q1,'title',self.list_songs))
+        thread_region = Thread(target=self.threadQuery,args=(q2,'name',self.list_regions))
 
         thread_songs.setDaemon(True)
         thread_region.setDaemon(True)
 
         thread_songs.start()
         thread_region.start()
-        
-        thread_songs.join()
-        thread_region.join()
 
-        print(results[0])
-        print(results[1])
 
-        items = []
-        for i in range(len(results[0])):
-            row = results[0].iloc[i]
-            items.append(f"{row['name']} : {row['title']}")
-
-        self.list_songs.addItems(items)
-
-        items = []
-        for i in range(len(results[1])):
-            print("adding region")
-            row = results[1].iloc[i]
-            items.append(f"{row['name']}")
-        self.list_regions.addItems(items)
-
-    def threadQuery(self:SpotifyAnalyzer, q, results, i):
+    def threadQuery(self:SpotifyAnalyzer, q,column, target_list:ListWidget):
         df = pd.read_sql(q.statement, self.session.bind)
-        with self.lock:
-            results[i] = df
-
-    def threadQuery2(self, type, name, list:ListWidget):
-
-        session_stmt = self.session.query(type)
-        session_results = session_stmt.all()
-        self.list_songs.clear()
-        try:
-            for result in session_results:
-                list.addItem(bytes(getattr(result,name), 'utf-16').decode('utf-16', 'ignore'))
-                pass
-            pass
-        except:
-            pass
+        items = df[column].values.tolist()
+        target_list.addItems(items)
 
     def clearPlot(self):
         self.plot.clearFigure()
