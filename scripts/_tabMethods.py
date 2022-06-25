@@ -12,13 +12,14 @@ from _tab_0 import Mixin_Tab_0
 from _tab_1 import Mixin_Tab_1
 from _tab_2 import Mixin_Tab_2
 from _tab_3 import Mixin_Tab_3
+from _tab_4 import Mixin_Tab_4
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spotifyAnalyzer import SpotifyAnalyzer
     
 
-class Mixin_TabMethods(Mixin_Tab_0, Mixin_Tab_1, Mixin_Tab_2, Mixin_Tab_3):
+class Mixin_TabMethods(Mixin_Tab_0, Mixin_Tab_1, Mixin_Tab_2, Mixin_Tab_3,Mixin_Tab_4):
     def __init__(self) -> None:
         print("Mixin init")
         self.queries: dict(int,Callable) = {}
@@ -30,6 +31,7 @@ class Mixin_TabMethods(Mixin_Tab_0, Mixin_Tab_1, Mixin_Tab_2, Mixin_Tab_3):
         Mixin_Tab_1.__init__(self)
         Mixin_Tab_2.__init__(self)
         Mixin_Tab_3.__init__(self)
+        Mixin_Tab_4.__init__(self)
         pass
 
     def queryTab(self:SpotifyAnalyzer,index):
@@ -38,6 +40,7 @@ class Mixin_TabMethods(Mixin_Tab_0, Mixin_Tab_1, Mixin_Tab_2, Mixin_Tab_3):
         pass
 
     def threadQuery(self:SpotifyAnalyzer, q,column, target_list:ListWidget):
+        self.t0_textBrowser.appendLineTimed(str(q))
         df = pd.read_sql(q.statement, self.session.bind)
         items = df[column].values.tolist()
         target_list.addItems(items)

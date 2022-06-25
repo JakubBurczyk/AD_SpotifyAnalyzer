@@ -492,3 +492,6 @@ class MatplotlibFigure(Widget):
         ax.plot(data, 'o-')
         plt.tight_layout()
         self.canvas.draw()
+
+    def imshow(self, *args):
+        pass
