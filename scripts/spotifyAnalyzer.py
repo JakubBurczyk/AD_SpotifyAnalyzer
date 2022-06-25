@@ -32,6 +32,7 @@ class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
         self.tab_0: Tab = self.mainTabWidget.addTab("tab_0",0)
         self.tab_1: Tab = self.mainTabWidget.addTab("tab_1",1)
         self.tab_2: Tab = self.mainTabWidget.addTab("tab_2",2)
+        self.tab_3: Tab = self.mainTabWidget.addTab("tab_3",3)
         pass
 
     def initCallbacks(self):
