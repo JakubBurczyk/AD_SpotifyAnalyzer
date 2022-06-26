@@ -98,7 +98,7 @@ class Mixin_Tab_1():
 
             thread_songs.start()
             thread_region.start()
-            self.t1_initialized = True
+            self.t1_queryInitalized = True
 
     def tab_1_clearPlot(self):
         self.t1_plot.clearFigure()
