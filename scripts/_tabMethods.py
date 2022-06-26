@@ -47,6 +47,7 @@ class Mixin_TabMethods(Mixin_Tab_0, Mixin_Tab_1, Mixin_Tab_2, Mixin_Tab_3,Mixin_
         self.t0_textBrowser.appendLineTimed(str(q.statement.compile(self.engine)))
         df = pd.read_sql(q.statement, self.session.bind)
         items = df[column].values.tolist()
+        print(target_list.name,len(items))
         target_list.addItems(items)
 
     def switch_category(self, category):

@@ -16,7 +16,7 @@ from PyQt5.QtWidgets import QListWidgetItem
 from typing import Union
 from dbClasses import *
 
-from sqlalchemy import create_engine, extract
+from sqlalchemy import create_engine, extract, distinct, func
 from sqlalchemy.ext.declarative import declarative_base
 import pandas as pd
 import numpy as np
@@ -81,16 +81,16 @@ class Mixin_Tab_1():
 
     def tab_1_query(self:SpotifyAnalyzer):
         if not self.t1_queryInitalized:
-            q1 = self.session.query(Song.title).filter(
-                #Song.song_id == Chart.song_id,
-                #Chart.category_id == Category.category_id,
-                #Category.name == "top200"
+            q1 = self.session.query(func.distinct(Song.title)).filter(
+                Song.song_id == Chart.song_id,
+                Chart.category_id == Category.category_id,
+                Category.name == "top200"
             )
 
             q2 = self.session.query(Region.name).filter(
             )
 
-            thread_songs = Thread(target=self.threadQuery, args=(q1,'title',self.t1_list_songs))
+            thread_songs = Thread(target=self.threadQuery, args=(q1,'distinct_1',self.t1_list_songs))
             thread_region = Thread(target=self.threadQuery, args=(q2,'name',self.t1_list_regions))
 
             thread_songs.setDaemon(True)
