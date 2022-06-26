@@ -82,6 +82,9 @@ class Mixin_Tab_1():
     def tab_1_query(self:SpotifyAnalyzer):
         if not self.t1_queryInitalized:
             q1 = self.session.query(Song.title).filter(
+                #Song.song_id == Chart.song_id,
+                #Chart.category_id == Category.category_id,
+                #Category.name == "top200"
             )
 
             q2 = self.session.query(Region.name).filter(

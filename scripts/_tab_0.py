@@ -25,6 +25,8 @@ if TYPE_CHECKING:
     from spotifyAnalyzer import SpotifyAnalyzer
     from _tabMethods import Mixin_TabMethods
 
+CATEGORY_200 = "top200"
+CATEGORY_50 = "viral50"
 
 class Mixin_Tab_0():
 

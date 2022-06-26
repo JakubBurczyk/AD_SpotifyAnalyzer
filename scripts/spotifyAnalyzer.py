@@ -7,6 +7,7 @@ import window as window
 from widgets import Tab
 from PyQt5.QtWidgets import QListWidgetItem
 import _tabMethods as tabMethods
+import geopandas as gpd
 
 class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
     mainWindow: window.Window
@@ -34,6 +35,7 @@ class SpotifyAnalyzer(GUI, tabMethods.Mixin_TabMethods):
         self.tab_2: Tab = self.mainTabWidget.addTab("tab_2",2)
         self.tab_3: Tab = self.mainTabWidget.addTab("tab_3",3)
         self.tab_4: Tab = self.mainTabWidget.addTab("tab_4",4)
+        self.tab_5: Tab = self.mainTabWidget.addTab("tab_5",5)
         pass
 
     def initCallbacks(self):

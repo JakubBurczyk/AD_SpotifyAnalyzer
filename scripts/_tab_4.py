@@ -20,6 +20,7 @@ if TYPE_CHECKING:
     from spotifyAnalyzer import SpotifyAnalyzer
     from _tabMethods import Mixin_TabMethods
 
+import globals
 
 class Mixin_Tab_4():
 
@@ -30,6 +31,7 @@ class Mixin_Tab_4():
         self.tab_4_widgets()
         self.tab_4_callbacks()
         self.t4_queryInitalized = False
+        self.category = globals.CATEGORY_200
 
     def tab_4_widgets(self:SpotifyAnalyzer):
         self.t4_plot:MatplotlibFigure = self.tab_4.addWidget(MatplotlibFigure(self.mainWindow, "plot5"))
@@ -37,6 +39,9 @@ class Mixin_Tab_4():
 
         self.t4_button_plot:Button = self.tab_4.addWidget(Button(self.mainWindow,"pushButton_plot_6",self.tab_4_plots))
         self.t4_button_clear:Button = self.tab_4.addWidget(Button(self.mainWindow,"pushButton_plot_clear_6",self.tab_4_clearPlot))
+        self.t4_button_category:Button = self.tab_4.addWidget(Button(self.mainWindow,"pushButton_category_5",self.tab_4_switch_category))
+
+        self.t4_label_category:Label = self.tab_4.addWidget(Label(self.mainWindow,"label_category_5"))
 
         self.t4_list_regions:ListWidget = self.tab_4.addWidget(ListWidget(self.mainWindow, "listWidget_region_5"))
 
@@ -70,6 +75,11 @@ class Mixin_Tab_4():
             self.t4_queryInitalized = True
         pass
 
+    def tab_4_switch_category(self:SpotifyAnalyzer):
+        self.category = self.switch_category(self.category)
+        self.t4_label_category.setText(self.category)
+        pass
+
     def tab_4_plots(self:SpotifyAnalyzer):
         
         region = self.t4_list_regions.getSelectedText()
@@ -86,7 +96,7 @@ class Mixin_Tab_4():
                     extract('year', Day.date) >= start,
                     extract('year', Day.date) <= end,
                     Chart.category_id == Category.category_id,
-                    Category.name == "top200"
+                    Category.name == self.category
                     ).group_by(Artist.name).order_by(func.count(Chart.chart_id).desc()).limit(limit)
 
         df = pd.read_sql(q.statement, self.session.bind)

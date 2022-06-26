@@ -1255,43 +1255,6 @@
           </layout>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_category_5">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="text">
-            <string>Switch category</string>
-           </property>
-           <property name="checkable">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_10">
-           <item>
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>CURRENT CATEGORY:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_category_5">
-             <property name="text">
-              <string>top200</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
           <widget class="QPushButton" name="pushButton_plot_6">
            <property name="text">
             <string>PLOT</string>
@@ -1310,7 +1273,7 @@
       </widget>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
-        <string>Count artists map</string>
+        <string>Strona</string>
        </attribute>
        <widget class="QFrame" name="plot_5">
         <property name="geometry">
@@ -1346,17 +1309,65 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_9">
          <item>
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
+          <widget class="QListWidget" name="listWidget_region_6">
+           <property name="font">
+            <font>
+             <family>Cascadia Mono</family>
+             <pointsize>8</pointsize>
+            </font>
            </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
+           <property name="editTriggers">
+            <set>QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
            </property>
-          </spacer>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="isWrapping" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+           <property name="selectionRectVisible">
+            <bool>false</bool>
+           </property>
+           <property name="currentRow">
+            <number>-1</number>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_search_region_6">
+           <property name="text">
+            <string>Search region</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_search_region_6"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_add_6">
+           <property name="text">
+            <string>ADD</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListWidget" name="listWidget_selected_regions_6"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_remove_6">
+           <property name="text">
+            <string>REMOVE</string>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_10">
@@ -1417,43 +1428,6 @@
               </size>
              </property>
             </spacer>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_category_6">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="text">
-            <string>Switch category</string>
-           </property>
-           <property name="checkable">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_9">
-           <item>
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>CURRENT CATEGORY:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_category_6">
-             <property name="text">
-              <string>top200</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
            </item>
           </layout>
          </item>

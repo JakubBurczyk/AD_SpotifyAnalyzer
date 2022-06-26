@@ -5,6 +5,7 @@ from turtle import end_fill
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+from soupsieve import select
 import widgets as widgets
 from matplotlib import pyplot as plt
 from PyQt5.QtWidgets import *
@@ -356,8 +357,17 @@ class ListWidget(Widget):
 
     def clear(self):
         self._widget.clear()
+    
+    def removeSelected(self) -> QListWidgetItem:
+        selected = self.getSelected()
+        item = self._widget.takeItem(self._widget.row(selected))
+        return item
 
-
+    def removeByText(self,text:str):        
+        for index in range(self._widget.count()):
+            if self._widget.item(index).text() == text:
+                self._widget.takeItem(index)
+        pass
 
 
 class Tab(Widget):

@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 from threading import Thread, Lock
+from matplotlib import artist
+
+from pyparsing import Char
 from gui import GUI
 import os
 import widgets as widgets
@@ -51,6 +54,10 @@ class Mixin_Tab_2():
     def tab_2_query(self):
         if not self.t2_queryInitalized:
             q1 = self.session.query(Artist.name).filter(
+                #SongArtist.song_id == Chart.song_id,
+                #SongArtist.artist_id == Artist.artist_id,
+                #Chart.category_id == Category.category_id,
+                #Category.name == 'top200'
             )
 
             thread_artists = Thread(target=self.threadQuery, args=(q1,'name',self.t2_list_artists))
