@@ -348,7 +348,7 @@
       </widget>
       <widget class="QWidget" name="tab_1">
        <attribute name="title">
-        <string>Top 200 position grapgh</string>
+        <string>Top 200 position graph</string>
        </attribute>
        <widget class="QFrame" name="plot_1">
         <property name="geometry">

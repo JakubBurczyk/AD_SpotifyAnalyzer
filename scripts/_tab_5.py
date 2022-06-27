@@ -116,7 +116,7 @@ class Mixin_Tab_5():
         world.plot(column='count_1', ax=self.t5_ax, legend=True, cax=cax, missing_kwds={'color': 'lightgrey'})
         self.t5_ax.set_xlabel("Longitude")
         self.t5_ax.set_ylabel("Latitude")
-        self.t5_ax.set_title(f"Unique artists reaching Top200 by country")
+        self.t5_ax.set_title(f"Unique artists reaching {self.category} by country")
 
         
         self.t5_plot.plotAxes()
